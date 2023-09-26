@@ -44,7 +44,7 @@ export default function Comments(props: any) {
       maNguoiBinhLuan: user?.user.id,
       ngayBinhLuan: new Date(),
       noiDung: values.comment,
-      saoBinhLuan: values.rating,
+      saoBinhLuan: Math.round(values.rating),
     };
 
     const rawResponse = await postAPI(
