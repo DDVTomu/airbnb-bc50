@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import StarRatingComponent from "react-rating-stars-component";
+import ReactStars from "react-stars";
 import { postAPI } from "@/lib/api";
 import * as Yup from "yup";
 
@@ -114,13 +114,10 @@ export default function Comments(props: any) {
               <Field name="rating">
                 {({ field }) => (
                   <div>
-                    <StarRatingComponent
+                    <ReactStars
                       size={50}
                       value={field.value} // Use 'field.value' to get the rating value
-                      starCount={5}
-                      name="rating"
-                      onStarClick={onStarClick}
-                      onStarHover={onStarHover}
+                      count={5}
                       onChange={(newValue: any) => {
                         setRaiting(newValue);
                         field.onChange({
