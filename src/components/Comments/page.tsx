@@ -11,7 +11,7 @@ export default function Comments(props: any) {
   const roomComments = props.comment;
   const roomRating = props.rating;
 
-  const [user, setUser] = useState("");
+  const [userData, setUserData] = useState("");
   const commentSchema = Yup.object().shape({
     comment: Yup.string().required("Xin hãy nhập bình luận trước khi đăng"),
   });
@@ -21,9 +21,13 @@ export default function Comments(props: any) {
     if (userData) {
       let value;
       value = JSON.parse(localStorage.getItem("userInfo") || "");
-      setUser(value);
+      setUserData(value);
     }
   }, []);
+
+  let user: any = [];
+  user = userData;
+
   const [raiting, setRaiting] = useState(1);
   const onStarClick = (nextValue: any, prevValue: any, name: any) => {
     setRaiting(nextValue);
@@ -112,7 +116,7 @@ export default function Comments(props: any) {
               </div>
               <label htmlFor="rating">Sao dánh giá</label>
               <Field name="rating">
-                {({ field }) => (
+                {({ field }: any) => (
                   <div>
                     <ReactStars
                       size={50}
