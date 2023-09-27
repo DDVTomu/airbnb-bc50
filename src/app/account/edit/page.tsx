@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { updateAPI } from "@/lib/api";
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
 export default function Register() {
   const [user, setUser] = useState("");
 
@@ -46,10 +48,21 @@ export default function Register() {
     if (rawResponse.statusCode == "200") {
       userData.user = rawResponse.content;
       localStorage.setItem("userInfo", JSON.stringify(userData));
-      alert("Cập nhật thành công!");
-      window.location.reload();
+
+      Swal.fire({
+        title: "Cập nhật thành công!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(function () {
+        window.location.reload();
+      });
     } else {
-      alert(`Cập nhật không thành công (Nguyên nhân: ${rawResponse.content})`);
+      Swal.fire(
+        `Cập nhật không thành công (Nguyên nhân: ${rawResponse.content})`,
+        "",
+        "error"
+      );
     }
   };
 

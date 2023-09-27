@@ -5,6 +5,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import ReactStars from "react-stars";
 import { postAPI } from "@/lib/api";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
 
 export default function Comments(props: any) {
   const roomDetails = props.data;
@@ -54,16 +56,26 @@ export default function Comments(props: any) {
     );
 
     if (rawResponse.statusCode == "200" || rawResponse.statusCode == "201") {
-      alert(`cám ơn bạn đã bình luận!`);
-      window.location.reload();
+      Swal.fire({
+        title: "Cám ơn bạn đã bình luận!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(function () {
+        window.location.reload();
+      });
     } else {
       console.log(rawResponse);
-      alert(`Bình luận Không thành công (Nguyên nhân: ${rawResponse.content})`);
+      Swal.fire(
+        `Bình luận Không thành công! (Nguyên nhân: ${rawResponse.content})`,
+        "",
+        "error"
+      );
     }
   };
 
   return (
-    <div className="mt-10 pb-5 border-b">
+    <div className="mt-10 pb-5 border-b" id="commentSection">
       <div>
         <h2 className="font-semibold text-gray-800 text-xl pb-4 flex items-center">
           <div className="flex items-center">

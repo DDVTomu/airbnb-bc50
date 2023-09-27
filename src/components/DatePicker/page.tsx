@@ -3,8 +3,11 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import { addDays, format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
+
 export default function DatePicker(props: any) {
   const roomDetails = props.data;
   const roomComments = props.comment;
@@ -44,6 +47,20 @@ export default function DatePicker(props: any) {
     let count = customer;
     setCustomer(--count);
   };
+
+  const [userData, setUserData] = useState("");
+
+  useEffect(() => {
+    const userData = localStorage.getItem("userInfo");
+    if (userData) {
+      let value;
+      value = JSON.parse(localStorage.getItem("userInfo") || "");
+      setUserData(value);
+    }
+  }, []);
+
+  let user: any = [];
+  user = userData;
 
   let totalPrice = Number(roomDetails.giaTien) * dateRange * customer;
   return (
@@ -233,14 +250,6 @@ export default function DatePicker(props: any) {
             <p className="text-base tracking-wider text-gray-800 mb-4">
               {roomDetails.moTa}
             </p>
-            {/* <button className="underline font-semibold text-base tracking-wider text-gray-800">
-              Hiển thị thêm
-              <span className="ml-1">
-              <svg viewBox="0 0 18 18" role="presentation" aria-hidden="true" focusable="false" style={{height: "12px", width: "12px", display: "inline-block", fill: "var(--f-k-smk-x)"}}>
-                  <path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z" fill-rule="evenodd"></path>
-              </svg>
-              </span>
-          </button> */}
           </div>
           <div className="mt-5 pb-5">
             <div>
@@ -705,7 +714,6 @@ export default function DatePicker(props: any) {
                 </div>
               </div>
             </div>
-            {/* <div className="mt-5"><button className="border border-solid border-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider">Hiển thị tất cả 75 tiện nghi</button></div> */}
           </div>
         </div>
         <div className="w-full sm:w-1/2 lg:w-2/5">
@@ -724,9 +732,12 @@ export default function DatePicker(props: any) {
                     <span className="text-sm font-normal">
                       <i className="fa fa-star"></i> {roomRating} .
                     </span>{" "}
-                    <span className="underline text-sm font-normal tracking-widest mx-1">
+                    <a
+                      href="#commentSection"
+                      className="underline text-sm font-normal tracking-widest mx-1"
+                    >
                       {roomComments.length} đánh giá
-                    </span>
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-col border border-solid border-gray-400 rounded-md">
@@ -780,6 +791,119 @@ export default function DatePicker(props: any) {
                   style={{
                     background:
                       "linear-gradient(to right, rgb(230, 30, 77) 0%, rgb(227, 28, 95) 50%, rgb(215, 4, 102) 100%)",
+                  }}
+                  onClick={() => {
+                    if (!userData) {
+                      Swal.fire({
+                        html: `Bạn chưa đăng nhập! Hãy đăng nhập để tiếp tục`,
+                        icon: "warning",
+                        showCloseButton: true,
+                        focusConfirm: false,
+                        confirmButtonText: "Đăng nhập",
+                        confirmButtonAriaLabel: "Thumbs up, great!",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          window.location.replace("/account/login");
+                        }
+                      });
+                    } else if (dateRange == 0) {
+                      Swal.fire({
+                        html: `Vui lòng nhập ngày`,
+                        icon: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    } else if (customer == 0) {
+                      Swal.fire({
+                        html: `Vui lòng nhập số khách`,
+                        icon: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                      });
+                    } else {
+                      Swal.fire({
+                        html: `
+                        Bạn có chắc đặt phòng này?
+                            <div class="mt-5 bg-white shadow-xl border rounded-xl p-6 w-full lg:w-5/6 mx-auto">
+                            <ul class="text-left">
+                            <li class="mt-1"><span class="font-semibold text-gray-800 text-base sm:text-lg">Tên phòng: </span>${
+                              roomDetails.tenPhong
+                            }</li>
+                            </ul>
+                              <div class="mt-5 flex flex-col border border-solid border-gray-400 rounded-md" bis_skin_checked="1">
+                                <div class="flex w-full border-b border-solid border-gray-400" bis_skin_checked="1">
+                                    <button class="border-r border-solid border-gray-400 rounded-tl-md w-full p-2 cursor-pointer hover:bg-gray-100 text-left">
+                                      <div class="text-xs uppercase font-semibold" bis_skin_checked="1">Nhận phòng</div>
+                                      <div class="m-1" bis_skin_checked="1">${format(
+                                        state[0].startDate,
+                                        "dd/MM/yyyy"
+                                      )}</div>
+                                    </button>
+                                    <button class=" rounded-tr-md w-full p-2 cursor-pointer hover:bg-gray-100 text-left">
+                                      <div class="text-xs uppercase font-semibold" bis_skin_checked="1">Trả phòng</div>
+                                      <div class="m-1" bis_skin_checked="1">${format(
+                                        state[0].endDate,
+                                        "dd/MM/yyyy"
+                                      )}</div>
+                                    </button>
+                                </div>
+                                <div class="p-2" bis_skin_checked="1">
+                                    <div class="uppercase text-xs font-semibold" bis_skin_checked="1">Khách</div>
+                                    <div class="flex justify-between items-center m-1" bis_skin_checked="1">
+                                      
+                                      <div bis_skin_checked="1">
+                                          0<!-- --> khách
+                                      </div>
+                     
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-b py-2">
+                            <div class="flex justify-between py-1 text-base">
+                              <div class="underline text-gray-600">
+                                $ ${roomDetails.giaTien} x ${dateRange} đêm
+                              </div>
+                              <div>
+                                <span>${totalPrice}</span> $
+                              </div>
+                            </div>
+                            <div class="flex justify-between py-1 text-base">
+                              <div class="underline text-gray-600">Phí dịch vụ</div>
+                              <div>
+                                <span>0</span> $
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="flex justify-between items-center text-lg font-semibold pt-3">
+                            <div>Tổng trước thuế</div>
+                            <div>${totalPrice} $</div>
+                          </div>
+                        </div>
+                        `,
+                        icon: "warning",
+                        focusConfirm: false,
+                        showCancelButton: true,
+                        cancelButtonText: "Không",
+                        confirmButtonText: "Có",
+                        confirmButtonAriaLabel: "Thumbs up, great!",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          const newState = [...state];
+                          newState[0].startDate = new Date();
+                          newState[0].endDate = new Date();
+                          setState(newState);
+                          setCustomer(0);
+
+                          Swal.fire({
+                            html: `Đặt phòng thành công!`,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                          });
+                        }
+                      });
+                    }
                   }}
                 >
                   Đặt phòng

@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { postAPI } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
 export default function Login() {
   const loginSchema = Yup.object().shape({
     password: Yup.string()
@@ -25,10 +27,20 @@ export default function Login() {
 
     if (rawResponse.statusCode == "200") {
       localStorage.setItem("userInfo", JSON.stringify(rawResponse.content));
-      alert("Đăng nhập thành công!");
-      window.location.replace("/");
+      Swal.fire({
+        title: "Đăng nhập thành công!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(function () {
+        window.location.replace("/");
+      });
     } else {
-      alert(`Đăng nhập không thành công (Nguyên nhân: ${rawResponse.content})`);
+      Swal.fire(
+        `Đăng nhập không thành công (Nguyên nhân: ${rawResponse.content})`,
+        "",
+        "error"
+      );
     }
   };
 
@@ -126,7 +138,7 @@ export default function Login() {
                     Chưa có tài khoản{" "}
                     <a
                       className="text-rose-700 hover:text-rose-500 hover:underline underline-offset-4 tracking-wider duration-200"
-                      href="/register"
+                      href="/account/register"
                     >
                       Đăng ký ngay
                     </a>

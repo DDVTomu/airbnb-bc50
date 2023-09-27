@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { postAPI } from "@/lib/api";
+import Swal from "sweetalert2";
+import "sweetalert2/src/sweetalert2.scss";
 export default function Register() {
   const registerSchema = Yup.object().shape({
     name: Yup.string()
@@ -22,7 +23,6 @@ export default function Register() {
     address: Yup.string().required("Xin hãy nhập địa chỉ"),
     birthday: Yup.date().required("Xin hãy chọn ngày tháng"),
   });
-  const router = useRouter();
   const handleSubmit = async (values: any) => {
     const rawResponse = await postAPI(
       "auth/signup",
@@ -31,10 +31,20 @@ export default function Register() {
     );
 
     if (rawResponse.statusCode == "200") {
-      alert("Đăng ký thành công!");
-      router.push("/account/login");
+      Swal.fire({
+        title: "Đăng ký thành công!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(function () {
+        window.location.replace("/account/login");
+      });
     } else {
-      alert(`Đăng ký không thành công (Nguyên nhân: ${rawResponse.content})`);
+      Swal.fire(
+        `Đăng ký không thành công (Nguyên nhân: ${rawResponse.content})`,
+        "",
+        "error"
+      );
     }
   };
 
@@ -214,7 +224,7 @@ export default function Register() {
                 </div>
                 <a
                   className="col-span-2 text-center text-rose-600 hover:text-rose-500 hover:underline underline-offset-4 tracking-wider duration-200"
-                  href="/login?from-register"
+                  href="/account/login"
                 >
                   Đăng nhập ngay
                 </a>
