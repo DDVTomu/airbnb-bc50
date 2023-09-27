@@ -5,6 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 Homepage + RoomDetails + Account : Phan Quang Duc
 Report URL: https://docs.google.com/spreadsheets/d/1bY44HLs3tLR-iqFHeFpQtGKYOOhKisR-NJKbtxGEsgw/edit?usp=sharing
 Deploy URL: https://airbnb-bc50.vercel.app/
+Link YT: https://youtu.be/M-OfY1rot7Y
 
 ## Getting Started
 
