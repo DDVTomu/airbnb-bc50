@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# AirBNB
+
+Homepage + RoomDetails + Account : Phan Quang Duc
+Report URL: https://docs.google.com/spreadsheets/d/1bY44HLs3tLR-iqFHeFpQtGKYOOhKisR-NJKbtxGEsgw/edit?usp=sharing
+Deploy URL: https://airbnb-bc50.vercel.app/
+
 ## Getting Started
 
 First, run the development server:
