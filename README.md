@@ -7,6 +7,10 @@ Report URL: https://docs.google.com/spreadsheets/d/1bY44HLs3tLR-iqFHeFpQtGKYOOhK
 Deploy URL: https://airbnb-bc50.vercel.app/
 Link YT: https://youtu.be/M-OfY1rot7Y
 
+email mentor:
+truonghuu478@gmail.com
+quanphamluong@gmail.com
+
 ## Getting Started
 
 First, run the development server:
